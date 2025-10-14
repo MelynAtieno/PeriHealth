@@ -36,13 +36,9 @@ export default function RootLayout() {
       options={{ title: 'Community' }}
     />
     <Tabs.Screen
-        name="logout"
-        options={{
-          title: "Logout",
-          tabBarButton: () => <Button title="Logout" onPress={() => {}} />,
-          tabBarIcon: () => null, // hide default icon
-        }}
-      />
+      name="profile"
+      options={{ title: 'Profile' }}
+    />
    </Tabs>
   );
 }
