@@ -35,6 +35,9 @@ export default function RootLayout() {
       name="community"
       options={{ 
         title: 'Community',
+        tabBarIcon: ({color, size}) => (
+          <Ionicons name ="chatbubbles-sharp" color={color} size={size} />
+        ),
         headerTitle: 'Community Forum' 
       }}
     />
