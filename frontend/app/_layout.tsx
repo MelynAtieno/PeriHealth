@@ -1,7 +1,9 @@
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
+import { Tabs } from 'expo-router';
+import { Button } from 'react-native';
+import SymptomsScreen from './(tabs)/symptoms';
+import LearnScreen from './(tabs)/learn';
+import CommunityScreen from './(tabs)/community';
 
 import { useColorScheme } from '@/hooks/use-color-scheme';
 
@@ -13,12 +15,34 @@ export default function RootLayout() {
   const colorScheme = useColorScheme();
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+   <Tabs 
+    screenOptions={{ 
+      headerShown: false,
+      tabBarActiveTintColor: "#2F80ED",
+      tabBarInactiveTintColor: "gray"
+
+     }}
+   >
+    <Tabs.Screen
+      name="symptoms"    
+      options={{ title: 'Symptoms' }}
+    />
+    <Tabs.Screen
+      name="learn"    
+      options={{ title: 'Learn' }}
+    />
+    <Tabs.Screen
+      name="community"
+      options={{ title: 'Community' }}
+    />
+    <Tabs.Screen
+        name="logout"
+        options={{
+          title: "Logout",
+          tabBarButton: () => <Button title="Logout" onPress={() => {}} />,
+          tabBarIcon: () => null, // hide default icon
+        }}
+      />
+   </Tabs>
   );
 }
