@@ -15,7 +15,6 @@ export default function RootLayout() {
     <Tabs.Screen
       name="symptoms"
       options={{ 
-        title: 'Symptoms',
         tabBarIcon: ({ color, size }) => (
           <Ionicons name="medkit" color={color} size={size} />
         ),
@@ -25,7 +24,9 @@ export default function RootLayout() {
     <Tabs.Screen
       name="learn"
       options={{ 
-        title: 'Learn',
+        tabBarIcon: ({color, size}) => (
+          <Ionicons name = "book-sharp" color={color} size={size} />
+        ),
         headerTitle: 'Gain Insights'
 
        }}
