@@ -8,16 +8,27 @@ export default function RootLayout() {
    <Tabs 
     screenOptions={{ 
       headerShown: true,
-      tabBarActiveTintColor: "#2F80ED",
-      tabBarInactiveTintColor: "gray"
+      headerStyle: {
+        backgroundColor: "#CDD9F6",
+        height: 120,
+        shadowColor: 'transparent'
+      },
+      tabBarIconStyle:{ marginTop: 10 },
+      tabBarStyle: { 
+        height: 90, 
+        paddingBottom: 10,
+        backgroundColor: "#cdd9f6"
+       },
+      tabBarActiveTintColor: "#6080e9ff",
+      tabBarInactiveTintColor: "black"
      }}
    >
     <Tabs.Screen
       name="symptoms"
       options={{ 
         tabBarLabel: "",
-        tabBarIcon: ({ color, size }) => (
-          <Ionicons name="medkit" color={color} size={size} />
+        tabBarIcon: ({ color }) => (
+          <Ionicons name="medkit" color={color} size={30} />
         ),
         headerTitle: 'Log Your Symptoms'
        }}
@@ -26,8 +37,8 @@ export default function RootLayout() {
       name="learn"
       options={{ 
         tabBarLabel: "",
-        tabBarIcon: ({color, size}) => (
-          <Ionicons name = "book-sharp" color={color} size={size} />
+        tabBarIcon: ({color}) => (
+          <Ionicons name = "book-sharp" color={color} size={30} />
         ),
         headerTitle: 'Gain Insights'
 
@@ -37,8 +48,8 @@ export default function RootLayout() {
       name="community"
       options={{ 
         tabBarLabel: "",
-        tabBarIcon: ({color, size}) => (
-          <Ionicons name ="chatbubbles-sharp" color={color} size={size} />
+        tabBarIcon: ({color}) => (
+          <Ionicons name ="chatbubbles-sharp" color={color} size={30} />
         ),
         headerTitle: 'Community Forum' 
       }}
@@ -47,8 +58,8 @@ export default function RootLayout() {
       name="profile"
       options={{ 
         tabBarLabel: "",
-        tabBarIcon: ({color, size}) =>(
-          <Ionicons name="person-circle-sharp" color={color} size={size} />
+        tabBarIcon: ({color}) =>(
+          <Ionicons name="person-circle-sharp" color={color} size={30} />
         ),
         headerTitle: 'Your Profile'
        }}
