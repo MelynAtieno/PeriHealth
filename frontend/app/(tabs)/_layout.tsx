@@ -15,6 +15,7 @@ export default function RootLayout() {
     <Tabs.Screen
       name="symptoms"
       options={{ 
+        tabBarLabel: "",
         tabBarIcon: ({ color, size }) => (
           <Ionicons name="medkit" color={color} size={size} />
         ),
@@ -24,6 +25,7 @@ export default function RootLayout() {
     <Tabs.Screen
       name="learn"
       options={{ 
+        tabBarLabel: "",
         tabBarIcon: ({color, size}) => (
           <Ionicons name = "book-sharp" color={color} size={size} />
         ),
@@ -34,7 +36,7 @@ export default function RootLayout() {
     <Tabs.Screen
       name="community"
       options={{ 
-        title: 'Community',
+        tabBarLabel: "",
         tabBarIcon: ({color, size}) => (
           <Ionicons name ="chatbubbles-sharp" color={color} size={size} />
         ),
@@ -44,7 +46,10 @@ export default function RootLayout() {
     <Tabs.Screen
       name="profile"
       options={{ 
-        title: 'Profile',
+        tabBarLabel: "",
+        tabBarIcon: ({color, size}) =>(
+          <Ionicons name="person-circle-sharp" color={color} size={size} />
+        ),
         headerTitle: 'Your Profile'
        }}
     />
