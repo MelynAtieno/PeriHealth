@@ -6,8 +6,9 @@ const styles = StyleSheet.create({
         backgroundColor: "#ECE6F0",
         borderRadius: 20,
         width: "90%",
-        margin: 24,
-        padding: 24,
+        alignSelf: "center",
+        marginTop:25,
+        padding: 18,
         shadowColor: "#000",
         shadowOffset: {width: 0, height: 4},
         shadowOpacity: 0.3,
@@ -34,7 +35,47 @@ export default function LearnScreen() {
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
                 Nulla vehicula vel augue ac pellentesque. 
                 Mauris odio neque, viverra in ante eu, vestibulum scelerisque quam. 
-                Vestibulum pulvinar nunc libero. Aenean vestibulum.</Text>
+                </Text>
+            </View>
+            <View style={styles.card}>            
+            <Text style={styles.cardHeading}>Myths & Facts About Menopause</Text>
+            <Text style={styles.cardSummary}>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                Nulla vehicula vel augue ac pellentesque. 
+                Mauris odio neque, viverra in ante eu, vestibulum scelerisque quam. 
+                </Text>
+            </View>
+            <View style={styles.card}>            
+            <Text style={styles.cardHeading}>The Stages of Menopause Explained</Text>
+            <Text style={styles.cardSummary}>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                Nulla vehicula vel augue ac pellentesque. 
+                Mauris odio neque, viverra in ante eu, vestibulum scelerisque quam. 
+                </Text>
+            </View>
+            <View style={styles.card}>            
+            <Text style={styles.cardHeading}>Early Signs You're Entering Perimenopause</Text>
+            <Text style={styles.cardSummary}>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                Nulla vehicula vel augue ac pellentesque. 
+                Mauris odio neque, viverra in ante eu, vestibulum scelerisque quam. 
+                </Text>
+            </View>
+            <View style={styles.card}>            
+            <Text style={styles.cardHeading}>Supplements That Support Menopausal Health</Text>
+            <Text style={styles.cardSummary}>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                Nulla vehicula vel augue ac pellentesque. 
+                Mauris odio neque, viverra in ante eu, vestibulum scelerisque quam. 
+                </Text>
+            </View>
+            <View style={styles.card}>            
+            <Text style={styles.cardHeading}>Nutritional Tips for Hormonal Imbalance</Text>
+            <Text style={styles.cardSummary}>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                Nulla vehicula vel augue ac pellentesque. 
+                Mauris odio neque, viverra in ante eu, vestibulum scelerisque quam. 
+                </Text>
             </View>
         </ScrollView>
     )
