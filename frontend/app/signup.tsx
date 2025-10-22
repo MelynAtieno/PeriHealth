@@ -1,0 +1,70 @@
+import { router } from "expo-router";
+import { View, Text, TextInput, StyleSheet, TouchableOpacity} from "react-native";
+
+const styles = StyleSheet.create({
+    input: {
+        borderRadius: 10,
+        borderColor: "#ccc",
+        padding: 10,
+        marginBottom:30,
+        backgroundColor: "#fff",
+        width: "85%", 
+        height: 50, 
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 3.84,
+    },
+    button: {
+        margin: 20,
+        padding: 10,
+        borderRadius: 10,
+        backgroundColor: '#CDD9F6',
+        width: "50%",
+        alignItems: 'center',
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.3,
+        shadowRadius: 3.84,
+        
+    }
+
+})
+
+
+export default function SignupScreen() {
+    return (
+        <View style={{        
+            padding: 20,
+            alignItems: 'center',
+            backgroundColor: '#ffffff',
+            height: '100%'
+         
+        }}>
+            
+            <Text style={{
+                fontWeight:'bold', 
+                fontSize:50,
+                marginBottom:40,
+                marginTop: 100
+                }}>
+                    Please Sign Up</Text>
+
+            <TextInput placeholder="Username" placeholderTextColor="#a3a3a3ff" style={styles.input}/>
+            <TextInput placeholder="Email" placeholderTextColor="#a3a3a3ff" style={styles.input}/>
+            <TextInput placeholder="Password" placeholderTextColor="#a3a3a3ff" style={styles.input}/>
+
+            <TouchableOpacity style={styles.button} onPress={() => {}}><Text style={{ fontWeight: 'bold'}}>SIGN UP</Text></TouchableOpacity>
+
+            <Text style={{marginTop: 20, fontSize: 15}}>Already have an account?</Text>
+
+           <TouchableOpacity onPress={() => router.push('/login')}><Text style={{ fontWeight: 'bold', marginTop: 20,  fontSize: 20}}>LOG IN</Text></TouchableOpacity>
+
+
+        </View>
+    )
+}
+
+export const screenOptions = {
+    headerShown: false,
+};

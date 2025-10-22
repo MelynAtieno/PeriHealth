@@ -1,6 +1,7 @@
 import { Button } from "@react-navigation/elements";
 import React from "react";
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from "react-native";
+import { useRouter } from "expo-router";
 
 const styles = StyleSheet.create({
     menuOption: {
@@ -29,6 +30,7 @@ const styles = StyleSheet.create({
 });
 
 export default function ProfileScreen() {
+    const router = useRouter();
     return (
         <ScrollView>
             <View style={{
@@ -88,6 +90,10 @@ export default function ProfileScreen() {
                 style={{alignItems:'center', marginTop:20, marginBottom:30}}>
             <TouchableOpacity style={styles.button} onPress={() => {}}>
                 <Text style={{fontWeight:'bold'}}>LOG OUT</Text>
+            </TouchableOpacity>
+            {/* Signup navigation button for testing */}
+            <TouchableOpacity style={[styles.button, {marginTop: 10, backgroundColor: '#A3D8F4'}]} onPress={() => router.push('/signup')}>
+                <Text style={{fontWeight:'bold'}}>Go to Signup</Text>
             </TouchableOpacity>
             </View>
         </ScrollView>
