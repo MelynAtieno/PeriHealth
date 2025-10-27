@@ -1,6 +1,9 @@
 import React from "react";
 import { router } from "expo-router";
 import { View, Text, TextInput, StyleSheet, TouchableOpacity} from "react-native";
+import { auth } from "../../firebaseConfig.js";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { useRouter } from "expo-router";
 
 const styles = StyleSheet.create({
     input: {
@@ -38,6 +41,17 @@ export default function SignupScreen() {
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
 
+    const router = useRouter();
+    const onSubmit = async() =>{
+        try{
+            const userCredentials = await createUserWithEmailAndPassword(auth, email, password);
+            const uid = userCredentials.user.uid;
+            router.replace('/(tabs)/symptoms');
+        } catch (error){
+            console.error("Signup failed!", error);
+        }
+    }
+
     return (
         <View style={{        
             padding: 20,
@@ -63,7 +77,7 @@ export default function SignupScreen() {
 
             <Text style={{marginTop: 20, fontSize: 15}}>Already have an account?</Text>
 
-           <TouchableOpacity onPress={() => router.push('/login')}><Text style={{ fontWeight: 'bold', marginTop: 20,  fontSize: 20}}>LOG IN</Text></TouchableOpacity>
+           <TouchableOpacity onPress={onSubmit}><Text style={{ fontWeight: 'bold', marginTop: 20,  fontSize: 20}}>LOG IN</Text></TouchableOpacity>
 
 
         </View>
@@ -73,3 +87,5 @@ export default function SignupScreen() {
 export const screenOptions = {
     headerShown: false,
 };
+
+
