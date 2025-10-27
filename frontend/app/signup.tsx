@@ -1,3 +1,4 @@
+import React from "react";
 import { router } from "expo-router";
 import { View, Text, TextInput, StyleSheet, TouchableOpacity} from "react-native";
 
@@ -33,6 +34,10 @@ const styles = StyleSheet.create({
 
 
 export default function SignupScreen() {
+    const [username, setUsername] = React.useState('');
+    const [email, setEmail] = React.useState('');
+    const [password, setPassword] = React.useState('');
+
     return (
         <View style={{        
             padding: 20,
@@ -50,9 +55,9 @@ export default function SignupScreen() {
                 }}>
                     Please Sign Up</Text>
 
-            <TextInput placeholder="Username" placeholderTextColor="#a3a3a3ff" style={styles.input}/>
-            <TextInput placeholder="Email" placeholderTextColor="#a3a3a3ff" style={styles.input}/>
-            <TextInput placeholder="Password" placeholderTextColor="#a3a3a3ff" style={styles.input}/>
+            <TextInput placeholder="Username" value={username} onChangeText={setUsername} placeholderTextColor="#a3a3a3ff" style={styles.input}/>
+            <TextInput placeholder="Email" value={email} onChangeText={setEmail} placeholderTextColor="#a3a3a3ff" style={styles.input}/>
+            <TextInput placeholder="Password" value={password} onChangeText={setPassword} placeholderTextColor="#a3a3a3ff" style={styles.input}/>
 
             <TouchableOpacity style={styles.button} onPress={() => {}}><Text style={{ fontWeight: 'bold'}}>SIGN UP</Text></TouchableOpacity>
 
