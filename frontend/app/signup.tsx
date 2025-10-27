@@ -1,5 +1,4 @@
-import React from "react";
-import { router } from "expo-router";
+import React from "react"
 import { View, Text, TextInput, StyleSheet, TouchableOpacity} from "react-native";
 import { auth, db } from "../firebaseConfig";
 import { createUserWithEmailAndPassword } from "firebase/auth";
@@ -82,11 +81,11 @@ export default function SignupScreen() {
             <TextInput placeholder="Email" value={email} onChangeText={setEmail} placeholderTextColor="#a3a3a3ff" style={styles.input}/>
             <TextInput placeholder="Password" value={password} onChangeText={setPassword} placeholderTextColor="#a3a3a3ff" style={styles.input}/>
 
-            <TouchableOpacity style={styles.button} onPress={() => {}}><Text style={{ fontWeight: 'bold'}}>SIGN UP</Text></TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={onSubmit}><Text style={{ fontWeight: 'bold'}}>SIGN UP</Text></TouchableOpacity>
 
             <Text style={{marginTop: 20, fontSize: 15}}>Already have an account?</Text>
 
-           <TouchableOpacity onPress={onSubmit}><Text style={{ fontWeight: 'bold', marginTop: 20,  fontSize: 20}}>LOG IN</Text></TouchableOpacity>
+           <TouchableOpacity onPress={() =>router.push("/login")}><Text style={{ fontWeight: 'bold', marginTop: 20,  fontSize: 20}}>LOG IN</Text></TouchableOpacity>
 
 
         </View>
