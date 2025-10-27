@@ -1,9 +1,10 @@
 import React from "react";
 import { router } from "expo-router";
 import { View, Text, TextInput, StyleSheet, TouchableOpacity} from "react-native";
-import { auth } from "../../firebaseConfig.js";
+import { auth, db } from "../../firebaseConfig.js";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "expo-router";
+import { doc, setDoc } from "firebase/firestore";
 
 const styles = StyleSheet.create({
     input: {
@@ -46,6 +47,14 @@ export default function SignupScreen() {
         try{
             const userCredentials = await createUserWithEmailAndPassword(auth, email, password);
             const uid = userCredentials.user.uid;
+
+            // store profile info in Firestore
+            await setDoc(doc(db, "users", uid), {
+                username: username,
+                email: email,
+            });
+
+            // Redirect to main app screen
             router.replace('/(tabs)/symptoms');
         } catch (error){
             console.error("Signup failed!", error);
