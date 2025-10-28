@@ -1,5 +1,6 @@
 import React from "react";
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from "react-native";
+import { useRouter } from "expo-router";
 
 const styles = StyleSheet.create({
     button: {
@@ -28,6 +29,7 @@ const styles = StyleSheet.create({
 })
 export default function SymptomsScreen() {
 
+    const router = useRouter();
     const today = new Date().toLocaleDateString();
 
     return (
@@ -40,7 +42,7 @@ export default function SymptomsScreen() {
 
             <View style={{alignItems:'center', marginTop:20, marginBottom:20}}>
                 <View style={{borderRadius: 200, height: 200, width: 200, backgroundColor:'orange'}}></View>
-            <TouchableOpacity style={styles.button} onPress={() => console.log("Button pressed")}><Text style={{fontWeight:'bold'}}>LOG SYMPTOMS</Text></TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={() => router.push('/symptomsForm')}><Text style={{fontWeight:'bold'}}>LOG SYMPTOMS</Text></TouchableOpacity>
             </View>
 
             <View style={{marginTop:20}}>
