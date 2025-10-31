@@ -247,7 +247,7 @@ export default function SymptomsForm() {
                         <Text style={{ fontWeight: 'bold', fontSize: 20}}>CANCEL</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.button} onPress={() => router.back()}>
+                    <TouchableOpacity style={styles.button} onPress={handleSave}>
                         <Text style={{ fontWeight: 'bold', fontSize: 20}}>SAVE</Text>
                     </TouchableOpacity>
                 </View>
