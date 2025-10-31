@@ -2,6 +2,8 @@ import { ScrollView, Text, TouchableOpacity, View, StyleSheet, TextInput} from "
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import { Checkbox } from "react-native-paper";
+import { auth, db } from "../firebaseConfig";
+import { setDoc, doc } from "firebase/firestore";
 
 const styles = StyleSheet.create({
     cancelButton: {
@@ -53,7 +55,24 @@ export default function SymptomsForm() {
     const router = useRouter();
     const today = new Date().toLocaleDateString();
     const [notes, setNotes] = useState('');
-    const [symptoms, setSymptoms] = useState({
+
+    type SymptomsState = {
+        hotFlashes: boolean;
+        nightSweats: boolean;
+        moodSwings: boolean;
+        insomnia: boolean;
+        fatigue: boolean;
+        brainFog: boolean;
+        headaches: boolean;
+        jointPain: boolean;
+        vaginalDryness: boolean;
+        lowLibido: boolean;
+        anxiety: boolean;
+        bloating: boolean;
+        
+    }
+
+    const [symptoms, setSymptoms] = useState<SymptomsState>({
         hotFlashes: false,
         nightSweats: false,
         moodSwings: false,
@@ -68,6 +87,50 @@ export default function SymptomsForm() {
         bloating: false
 
     })
+
+
+    const handleSave = async () => {
+        // Collect selected symptoms
+        const selectedSymptoms = (Object.keys(symptoms) as Array<keyof SymptomsState>).filter(key => symptoms[key]);
+
+        // Validate input. No empty fields
+        if(!selectedSymptoms.length && !notes) {
+            alert("Please select at least one symptom or add notes.");
+            return;
+        }
+
+        // Get the logged in user
+        const user = auth.currentUser;
+        if(!user) {
+            alert("You must be logged in to save symptoms.");
+            return;
+        }
+        const userId = user.uid;
+
+        // Firebase data object
+        const symptomData = {
+            userId,
+            date: today,
+            symptoms: selectedSymptoms,
+            notes
+        }
+
+        // Firestore path to save data. One record per user per day
+        const docRef = doc(db, "symptoms", `${userId}_${symptomData}`)
+
+        // Save data to Firestore
+        try{
+            await setDoc(docRef, symptomData);
+            alert("Symptoms saved successfully!");    
+            router.back();
+            setSymptoms(Object.fromEntries(Object.keys(symptoms).map(key => [key, false])) as SymptomsState);
+            setNotes('');
+        } catch (error) {
+            alert("Error saving symptoms. Please try again.");
+        
+        }        
+
+    }
 
     return (
         <ScrollView style={{marginTop:100}} contentContainerStyle={{alignItems:'center'}} >
