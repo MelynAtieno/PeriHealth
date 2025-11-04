@@ -46,7 +46,7 @@ export default function SymptomsScreen() {
             </View>
 
             <View style={{marginTop:20}}>
-            <TouchableOpacity style={styles.symptomsMenu} onPress={() => router.push('/pastEntries')}>
+            <TouchableOpacity style={styles.symptomsMenu} onPress={() => router.push('../pastEntries/entriesList')}>
                 <Text style={{fontWeight:'bold', fontSize: 20}}>View Past Entries</Text></TouchableOpacity>
             <TouchableOpacity style={styles.symptomsMenu} onPress={() => console.log("Button pressed")}>
                 <Text style={{fontWeight:'bold', fontSize:20}}>Download Symptoms</Text></TouchableOpacity>

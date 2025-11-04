@@ -1,4 +1,4 @@
-import { auth, db} from "../firebaseConfig";
+import { auth, db} from "../../firebaseConfig";
 import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
 import { ScrollView, View, Text, TouchableOpacity} from "react-native";
 import { useRouter } from "expo-router";
@@ -40,6 +40,9 @@ export default function pastEntries() {
                 <TouchableOpacity style={styles.goBackButton} onPress={() => router.back()}>
                     <Text style={{fontWeight: 'bold', fontSize: 20}}>GO BACK</Text>
                 </TouchableOpacity>
+            </View>
+            <View>
+                
             </View>
         </ScrollView>   
     )
