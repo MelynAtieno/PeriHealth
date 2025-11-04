@@ -157,13 +157,13 @@ export default function SymptomsForm() {
                         onPress={() => setSymptoms(prev =>({...prev, hotFlashes: !prev.hotFlashes}))}
                     />
                     <Checkbox.Item style={styles.checkbox}
-                        label="Night Sweats"
+                        label="Night sweats"
                         labelStyle={styles.checkLabel}
                         status={symptoms.nightSweats ? 'checked' : 'unchecked'}
                         onPress={() => setSymptoms(prev =>({...prev, nightSweats: !prev.nightSweats}))}
                     />
                     <Checkbox.Item style={styles.checkbox}
-                        label="Mood Swings"
+                        label="Mood swings"
                         labelStyle={styles.checkLabel}
                         status={symptoms.moodSwings ? 'checked' : 'unchecked'}
                         onPress={() => setSymptoms(prev =>({...prev, moodSwings: !prev.moodSwings}))}
