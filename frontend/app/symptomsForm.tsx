@@ -3,7 +3,7 @@ import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import { Checkbox } from "react-native-paper";
 import { auth, db } from "../firebaseConfig";
-import { setDoc, doc } from "firebase/firestore";
+import { setDoc, doc, serverTimestamp } from "firebase/firestore";
 
 const styles = StyleSheet.create({
     cancelButton: {
@@ -53,6 +53,7 @@ const styles = StyleSheet.create({
 export default function SymptomsForm() {
 
     const router = useRouter();
+    const [loading, setLoading] = React.useState(false);
     const today = new Date().toLocaleDateString();
     const [notes, setNotes] = useState('');
 
@@ -90,6 +91,7 @@ export default function SymptomsForm() {
 
 
     const handleSave = async () => {
+        setLoading(true);
         // Collect selected symptoms
         const selectedSymptoms = (Object.keys(symptoms) as Array<keyof SymptomsState>).filter(key => symptoms[key]);
 
@@ -103,6 +105,7 @@ export default function SymptomsForm() {
         const user = auth.currentUser;
         if(!user) {
             alert("You must be logged in to save symptoms.");
+            setLoading(false);
             return;
         }
         const userId = user.uid;
@@ -110,17 +113,19 @@ export default function SymptomsForm() {
         // Firebase data object
         const symptomData = {
             userId,
-            date: today,
+            date: new Date().toISOString(),
             symptoms: selectedSymptoms,
-            notes
+            notes: notes || null,
+            createdAt: serverTimestamp()
         }
 
         // Firestore path to save data. One record per user per day
-        const docRef = doc(db, "symptoms", `${userId}_${symptomData}`)
+        const day = new Date().toISOString().slice(0,10); // YYYY-MM-DD format
+        const docRef = doc(db, 'users', 'symptoms', day);
 
         // Save data to Firestore
         try{
-            await setDoc(docRef, symptomData);
+            await setDoc(docRef, symptomData, { merge: true });
             alert("Symptoms saved successfully!");    
             router.back();
             setSymptoms(Object.fromEntries(Object.keys(symptoms).map(key => [key, false])) as SymptomsState);
@@ -128,7 +133,9 @@ export default function SymptomsForm() {
         } catch (error) {
             alert( error instanceof Error? error.message: "Error saving symptoms. Please try again.");
         
-        }        
+        } finally {
+            setLoading(false);
+        }     
 
     }
 
@@ -247,8 +254,8 @@ export default function SymptomsForm() {
                         <Text style={{ fontWeight: 'bold', fontSize: 20}}>CANCEL</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.button} onPress={handleSave}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 20}}>SAVE</Text>
+                    <TouchableOpacity style={styles.button} onPress={handleSave} disabled={loading}>
+                        <Text style={{ fontWeight: 'bold', fontSize: 20}}>{ loading? 'Saving...': 'SAVE'}</Text>
                     </TouchableOpacity>
                 </View>
             </View>
