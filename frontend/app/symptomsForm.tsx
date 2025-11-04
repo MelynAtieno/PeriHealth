@@ -126,7 +126,7 @@ export default function SymptomsForm() {
             setSymptoms(Object.fromEntries(Object.keys(symptoms).map(key => [key, false])) as SymptomsState);
             setNotes('');
         } catch (error) {
-            alert("Error saving symptoms. Please try again.");
+            alert( error instanceof Error? error.message: "Error saving symptoms. Please try again.");
         
         }        
 
