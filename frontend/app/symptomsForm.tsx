@@ -121,7 +121,7 @@ export default function SymptomsForm() {
 
         // Firestore path to save data. One record per user per day
         const day = new Date().toISOString().slice(0,10); // YYYY-MM-DD format
-        const docRef = doc(db, 'users', 'symptoms', day);
+        const docRef = doc(db, 'users', userId, 'symptoms', day);
 
         // Save data to Firestore
         try{
