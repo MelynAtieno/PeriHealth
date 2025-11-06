@@ -3,6 +3,7 @@ import { auth, db } from '../../firebaseConfig';
 import { collection, query, orderBy, onSnapshot, Timestamp } from 'firebase/firestore';
 import { View, Text, TouchableOpacity, ActivityIndicator, FlatList, StyleSheet, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
+import { toSymptomLabels } from '../constants/symptomLabels';
 
 
 
@@ -86,13 +87,14 @@ export default function PastEntriesList() {
                     contentContainerStyle={{ paddingBottom:24 }}
                     renderItem={({ item }) => {
                         const dateLabel = item.dateISO ? new Date(item.dateISO).toLocaleDateString() : item.id;
-                        const preview = item.symptoms.slice(0, 2).join(', ');
-                        const extra = item.symptoms.length > 2 ? ` +${item.symptoms.length - 2} more` : '';
+                        const labels = toSymptomLabels(item.symptoms);
+                        const preview = labels.slice(0, 2).join(', ');
+                        const extra = labels.length > 2 ? ` +${labels.length - 2} more` : '';
                         return (
                             <Pressable style={styles.row} onPress={() => router.push(`/pastEntries/${item.id}` as any)}>
                                 <View style={{ flex: 1 }}>
                                     <Text style={styles.rowTitle}>{dateLabel}</Text>
-                                    {item.symptoms.length > 0 ? (
+                                    {labels.length > 0 ? (
                                         <Text style={styles.rowSubtitle} numberOfLines={1}>{preview}{extra}</Text>
                                     ) : (
                                         <Text style={styles.rowSubtitle}>(no symptoms)</Text>
