@@ -62,7 +62,7 @@ export default function PastEntriesList() {
                         <TouchableOpacity style={styles.goBackButton} onPress={() => router.back()}>
                             <Text style={{ fontWeight: 'bold' }}>GO BACK</Text>
                         </TouchableOpacity>
-                        <Text style={styles.title}>Past Entries</Text>
+        
                     </View>
                     <View style={[styles.center, {marginTop:24}] }>
                         <Text style={styles.headerText}>Past Entries will be displayed here.</Text>
@@ -76,10 +76,10 @@ export default function PastEntriesList() {
                 <View style={styles.headerRow}>
                     <TouchableOpacity style={styles.goBackButton} onPress={() => router.back()}>
                         <Text style={{ fontWeight: 'bold' }}>GO BACK</Text>
-                    </TouchableOpacity>
-                    <Text style={styles.title}>Past Entries</Text>
+                    </TouchableOpacity>            
                 </View>
-                <Text style={styles.headerText}>Past Entries will be displayed here.</Text>
+
+                <Text style={styles.headerText}>Past Entries</Text>
                 <FlatList
                     data={entries}
                     keyExtractor={(item) => item.id}
@@ -113,9 +113,9 @@ export default function PastEntriesList() {
 
 const styles = StyleSheet.create({
     center: { flex:1, alignItems:'center', justifyContent:'center', paddingHorizontal:16 },
-    headerRow: { flexDirection:'row', alignItems:'center', justifyContent:'space-between' },
+    headerRow: { flexDirection:'row', alignItems:'center', justifyContent:'space-between', marginTop:60 },
     title: { fontSize:20, fontWeight:'700' },
-    headerText: { marginTop:8, color:'#555' },
+    headerText: { marginTop:15, fontSize:20, fontWeight:'bold', marginBottom: 15, textAlign:'center' },
     goBackButton: {
         marginTop: 20,
         paddingVertical: 10,
