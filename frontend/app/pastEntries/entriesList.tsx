@@ -115,7 +115,7 @@ export default function PastEntriesList() {
 
 const styles = StyleSheet.create({
     center: { flex:1, alignItems:'center', justifyContent:'center', paddingHorizontal:16 },
-    headerRow: { flexDirection:'row', alignItems:'center', justifyContent:'space-between', marginTop:60 },
+    headerRow: { flexDirection:'row', alignItems:'center', justifyContent:'space-between', marginTop:40 },
     title: { fontSize:20, fontWeight:'700' },
     headerText: { marginTop:15, fontSize:20, fontWeight:'bold', marginBottom: 15, textAlign:'center' },
     goBackButton: {

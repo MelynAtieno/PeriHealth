@@ -1,4 +1,3 @@
-import { Button } from "@react-navigation/elements";
 import React from "react";
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from "react-native";
 import { useRouter } from "expo-router";

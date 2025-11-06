@@ -93,7 +93,7 @@ export default function SymptomsForm() {
     const handleSave = async () => {
         setLoading(true);
         // Collect selected symptoms
-        const selectedSymptoms = (Object.keys(symptoms) as Array<keyof SymptomsState>).filter(key => symptoms[key]);
+    const selectedSymptoms = (Object.keys(symptoms) as (keyof SymptomsState)[]).filter(key => symptoms[key]);
 
         // Validate input. No empty fields
         if(!selectedSymptoms.length && !notes) {

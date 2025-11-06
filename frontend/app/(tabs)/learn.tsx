@@ -54,7 +54,7 @@ export default function LearnScreen() {
                 </Text>
             </View>
             <View style={styles.card}>            
-            <Text style={styles.cardHeading}>Early Signs You're Entering Perimenopause</Text>
+            <Text style={styles.cardHeading}>Early Signs You&apos;re Entering Perimenopause</Text>
             <Text style={styles.cardSummary}>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
                 Nulla vehicula vel augue ac pellentesque. 
