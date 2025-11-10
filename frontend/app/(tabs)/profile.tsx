@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity, ActivityIndicator } from "react-native";
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, ActivityIndicator, RefreshControl } from "react-native";
 import { useRouter } from "expo-router";
 import { auth, db } from "../../firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
@@ -35,29 +35,55 @@ export default function ProfileScreen() {
     const router = useRouter();
     const [username, setUsername] = React.useState<string | null>(null);
     const [loading, setLoading] = React.useState(true);
+    const [refreshing, setRefreshing] = React.useState(false);
+
+    const fetchProfile = React.useCallback(async () => {
+        const user = auth.currentUser;
+        if (!user) { setUsername(null); return; }
+        const fallback = user.displayName || (user.email ? user.email.split('@')[0] : 'User');
+        try {
+            const ref = doc(db, 'users', user.uid);
+            const snap = await getDoc(ref);
+            const data: any = snap.exists() ? snap.data() : {};
+            setUsername(data?.username || data?.displayName || fallback);
+        } catch {
+            setUsername(fallback);
+        }
+    }, []);
 
     React.useEffect(() => {
-        const user = auth.currentUser;
-        if (!user) { setLoading(false); return; }
-        const fallback = user.displayName || (user.email ? user.email.split('@')[0] : 'User');
         (async () => {
             try {
-                const ref = doc(db, 'users', user.uid);
-                const snap = await getDoc(ref);
-                const data: any = snap.exists() ? snap.data() : {};
-                setUsername(data?.username || data?.displayName || fallback);
-            } catch {
-                setUsername(fallback);
+                setLoading(true);
+                await fetchProfile();
             } finally {
                 setLoading(false);
             }
         })();
     }, []);
 
+    const onRefresh = React.useCallback(async () => {
+        setRefreshing(true);
+        try {
+            await fetchProfile();
+        } finally {
+            setRefreshing(false);
+        }
+    }, [fetchProfile]);
+
     const initialLetter = (username || '').charAt(0).toUpperCase() || 'U';
 
     return (
-        <ScrollView>
+        <ScrollView
+            refreshControl={
+                <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                    colors={["#CDD9F6"]}
+                    tintColor="#CDD9F6"
+                />
+            }
+        >
             <View style={{
                 marginBottom:10,
                 borderBottomWidth:1,
