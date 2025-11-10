@@ -100,11 +100,11 @@ export default function SymptomsScreen() {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Symptom log</title>
+    <title>Symptom Log</title>
     <style>
       body { font-family: -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; color:#111; margin: 24px; }
       h1 { text-align:center; font-size: 24px; margin-bottom: 8px; }
-      .meta { text-align:center; color:#555; margin-bottom: 24px; }
+      .meta { text-align:center; margin-bottom: 24px; }
       .entry { border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px 16px; margin-bottom: 12px; }
       .entry h2 { font-size: 18px; margin: 0 0 6px 0; }
       ul { margin: 6px 0 10px 20px; }
@@ -114,8 +114,8 @@ export default function SymptomsScreen() {
     </style>
   </head>
   <body>
-    <h1>Symptom log</h1>
-    <div class="meta">User: ${escapeHtml(username)}</div>
+    <h1>PERIHEALTH SYMPTOM REPORT</h1>
+    <div class="meta"><b>NAME:</b> ${escapeHtml(username)}</div>
     ${itemsHtml || '<p><em>No entries found.</em></p>'}
   </body>
 </html>`;
@@ -148,6 +148,7 @@ export default function SymptomsScreen() {
             setExportRows(rows);
             const username = await fetchUserDisplayName(userId);
             const html = buildSymptomsHtml(username, rows);
+
             // Generate PDF and share immediately
             const { uri } = await Print.printToFileAsync({ html });
             const canShare = await Sharing.isAvailableAsync();
