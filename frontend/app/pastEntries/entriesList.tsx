@@ -91,7 +91,10 @@ export default function PastEntriesList() {
                         const preview = labels.slice(0, 2).join(', ');
                         const extra = labels.length > 2 ? ` +${labels.length - 2} more` : '';
                         return (
-                            <Pressable style={styles.row} onPress={() => router.push(`/pastEntries/${item.id}` as any)}>
+                            <Pressable
+                              style={styles.row}
+                              onPress={() => router.push({ pathname: '/pastEntries/listDay', params: { day: item.id } })}
+                            >
                                 <View style={{ flex: 1 }}>
                                     <Text style={styles.rowTitle}>{dateLabel}</Text>
                                     {labels.length > 0 ? (

@@ -1,3 +1,4 @@
+// Symptom key -> human-friendly label mapping
 export const SYMPTOM_LABELS: Record<string, string> = {
   hotFlashes: "Hot flashes",
   nightSweats: "Night sweats",
@@ -26,3 +27,8 @@ function titleCaseFallback(key: string): string {
     .toLowerCase();
   return spaced.replace(/\b\w/g, (c) => c.toUpperCase());
 }
+
+// Named + default export to appease tooling expecting a React component default.
+
+const symptomLabels = { SYMPTOM_LABELS, toSymptomLabels };
+export default symptomLabels;
