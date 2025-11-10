@@ -149,8 +149,11 @@ export default function SymptomsScreen() {
             const username = await fetchUserDisplayName(userId);
             const html = buildSymptomsHtml(username, rows);
 
-            // Generate PDF and share immediately
+            // Generate PDF
             const { uri } = await Print.printToFileAsync({ html });
+
+            // Turn off loading before opening share sheet so UI isn't stuck after closing it
+            setExportLoading(false);
             const canShare = await Sharing.isAvailableAsync();
             if (!canShare) {
                 alert('Sharing not available on this device. PDF saved locally at:\n' + uri);
@@ -161,10 +164,10 @@ export default function SymptomsScreen() {
             console.error('Export fetch error:', e);
             alert(e?.message || 'Failed to load symptoms.');
         } finally {
+            // Ensure loading state resets even if sharing was cancelled
             setExportLoading(false);
         }
-
-    }
+    };
 
     return (
         <ScrollView>
@@ -183,7 +186,7 @@ export default function SymptomsScreen() {
             <TouchableOpacity style={styles.symptomsMenu} onPress={() => router.push('../pastEntries/entriesList')}>
                 <Text style={{fontWeight:'bold', fontSize: 20}}>View Past Entries</Text></TouchableOpacity>
             <TouchableOpacity style={styles.symptomsMenu} onPress={handleShareSymptoms} disabled={exportLoading}>
-                <Text style={{fontWeight:'bold', fontSize:20}}>{exportLoading ? 'Preparing…' : 'Download/Share Symptoms'}</Text></TouchableOpacity>
+                <Text style={{fontWeight:'bold', fontSize:20}}>{exportLoading ? 'Preparing PDF…' : 'Download/Share Symptoms'}</Text></TouchableOpacity>
             </View>
         </ScrollView>
     );
