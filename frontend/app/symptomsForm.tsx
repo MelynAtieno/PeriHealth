@@ -6,6 +6,9 @@ import { auth, db } from "../firebaseConfig";
 import { setDoc, doc, serverTimestamp } from "firebase/firestore";
 
 const styles = StyleSheet.create({
+    topHeader: { backgroundColor:'#CDD9F6', height:120, alignItems:'center', justifyContent:'center' },
+    headerTitle: { fontSize:20, fontWeight:'bold', marginTop:60 },
+    formWrap: { paddingTop:16, alignItems:'center' },
     cancelButton: {
         margin: 20,
         padding: 10,
@@ -45,8 +48,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 18,
     }
-
-    
 });
 
 
@@ -54,7 +55,6 @@ export default function SymptomsForm() {
 
     const router = useRouter();
     const [loading, setLoading] = React.useState(false);
-    const today = new Date().toLocaleDateString();
     const [notes, setNotes] = useState('');
 
     type SymptomsState = {
@@ -140,15 +140,11 @@ export default function SymptomsForm() {
     }
 
     return (
-        <ScrollView style={{marginTop:100}} contentContainerStyle={{alignItems:'center'}} >
-            <View>
-                
-                <View style={{marginBottom:20, alignItems:'center'}}>
-                <Text style={{fontWeight:'bold', fontSize:15}}>Date: {today}</Text>
-
-                <Text style={{fontWeight:'bold', fontSize:20, marginTop:20}}>Select your symptoms</Text>
-                </View>
-
+        <View style={{flex:1}}>
+            <View style={styles.topHeader}>    
+                <Text style={styles.headerTitle}>Select your symptoms</Text>
+            </View>
+            <ScrollView style={{flex:1}} contentContainerStyle={styles.formWrap}>
                 <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 2, justifyContent: 'center' }}>
                     <Checkbox.Item style={styles.checkbox}
                         label="Hot flashes"
@@ -253,12 +249,11 @@ export default function SymptomsForm() {
                     <TouchableOpacity style={styles.cancelButton} onPress={() => router.back()}>
                         <Text style={{ fontWeight: 'bold', fontSize: 20}}>CANCEL</Text>
                     </TouchableOpacity>
-
                     <TouchableOpacity style={styles.button} onPress={handleSave} disabled={loading}>
                         <Text style={{ fontWeight: 'bold', fontSize: 20}}>{ loading? 'Saving...': 'SAVE'}</Text>
                     </TouchableOpacity>
                 </View>
-            </View>
-        </ScrollView>
+            </ScrollView>
+        </View>
     );
 }
