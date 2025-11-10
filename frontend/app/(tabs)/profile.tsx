@@ -3,6 +3,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, ActivityIndicator
 import { useRouter } from "expo-router";
 import { auth, db } from "../../firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
+import { signOut } from "firebase/auth";
 
 const styles = StyleSheet.create({
     menuOption: {
@@ -122,7 +123,19 @@ export default function ProfileScreen() {
 
             <View
                 style={{alignItems:'center', marginTop:20, marginBottom:30}}>
-            <TouchableOpacity style={styles.button} onPress={() => { /* TODO: implement logout */ }} disabled={loading || !auth.currentUser}>
+            <TouchableOpacity
+                style={styles.button}
+                onPress={async () => {
+                    try {
+                        await signOut(auth);
+                        router.replace('/signup');
+                    } catch (e: any) {
+                        console.error('Logout failed:', e);
+                        alert(e?.message || 'Failed to log out.');
+                    }
+                }}
+                disabled={loading || !auth.currentUser}
+            >
                 <Text style={{fontWeight:'bold'}}>{auth.currentUser ? 'LOG OUT' : 'LOG IN'}</Text>
             </TouchableOpacity>
         
