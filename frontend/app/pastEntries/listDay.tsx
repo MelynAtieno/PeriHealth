@@ -104,18 +104,18 @@ export default function PastEntryDetail() {
 
 const styles = StyleSheet.create({
   center: { flex:1, alignItems:'center', justifyContent:'center', paddingHorizontal:16 },
-  screenPad: { paddingTop:40, paddingHorizontal:16, marginTop:40 },
+  screenPad: { paddingTop:40, paddingHorizontal:16, marginTop:50 },
   titleCentered: { fontSize:22, fontWeight:'700', marginTop:16, textAlign:'center', marginBottom:8 },
   cardCentered: { backgroundColor:'#fff', borderRadius:12, padding:16, marginTop:20, width:'90%', alignItems:'center', shadowColor:'#000', shadowOffset:{width:0,height:2}, shadowOpacity:0.1, shadowRadius:4, elevation:2 },
   chipsWrapCentered: { flexDirection:'row', flexWrap:'wrap', justifyContent:'center' },
-  backBtn: { paddingVertical:10, paddingHorizontal:16, borderRadius:10, backgroundColor:'#8e8f90ff', alignItems:'center', shadowColor:'#000', shadowOffset:{width:0,height:4}, shadowOpacity:0.3, shadowRadius:3.84 },
+  backBtn: { paddingVertical:10, paddingHorizontal:16, borderRadius:10, width:100, backgroundColor:'#8e8f90ff', alignItems:'center', shadowColor:'#000', shadowOffset:{width:0,height:4}, shadowOpacity:0.3, shadowRadius:3.84 },
   backText: { fontWeight:'bold' },
   card: { backgroundColor:'#fff', borderRadius:12, padding:16, marginTop:16, shadowColor:'#000', shadowOffset:{width:0,height:2}, shadowOpacity:0.1, shadowRadius:4, elevation:2 },
-  sectionTitle: { fontSize:16, fontWeight:'600', marginBottom:8 },
-  value: { fontSize:14, color:'#333' },
+  sectionTitle: { fontSize:20, fontWeight:'bold', marginBottom:8 },
+  value: { fontSize:15 },
   muted: { fontSize:14, color:'#777' },
   meta: { marginTop:6, fontSize:12, color:'#555' },
   chipsWrap: { flexDirection:'row', flexWrap:'wrap' },
-  chip: { backgroundColor:'#eef2ff', paddingVertical:6, paddingHorizontal:10, borderRadius:16, marginRight:8, marginBottom:8 },
-  chipText: { color:'#3730a3', fontWeight:'600' }
+  chip: { backgroundColor:'#cdd9f6', paddingVertical:8, paddingHorizontal:10, borderRadius:16, marginRight:8, marginBottom:8 },
+  chipText: { fontSize: 15 }
 });
