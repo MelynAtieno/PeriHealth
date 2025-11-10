@@ -56,59 +56,55 @@ export default function PastEntriesList() {
     if (loading) {
         return <View style={styles.center}><ActivityIndicator /><Text style={{marginTop:8}}>Loading entries…</Text></View>;
     }
-        if (entries.length === 0) {
-            return (
-                <View style={{ flex:1, paddingTop:40, paddingHorizontal:16 }}>
-                    <View style={styles.headerRow}>
-                        <TouchableOpacity style={styles.goBackButton} onPress={() => router.back()}>
-                            <Text style={{ fontWeight: 'bold' }}>GO BACK</Text>
-                        </TouchableOpacity>
-        
-                    </View>
-                    <View style={[styles.center, {marginTop:24}] }>
-                        <Text style={styles.headerText}>Past Entries will be displayed here.</Text>
-                        <Text style={{marginTop:8}}>No entries yet.</Text>
-                    </View>
-                </View>
-            );
-        }
+        const isEmpty = entries.length === 0;
         return (
-            <View style={{ flex:1, paddingTop:40, paddingHorizontal:16 }}>
-                <View style={styles.headerRow}>
+            <View style={styles.screen}>
+                    <View style={styles.topHeader}>
+                      <Text style={styles.headerTitle}>Past Entries</Text>
+                    </View>
+                <View style={styles.controlsRow}>
                     <TouchableOpacity style={styles.goBackButton} onPress={() => router.back()}>
                         <Text style={{ fontWeight: 'bold' }}>GO BACK</Text>
-                    </TouchableOpacity>            
+                    </TouchableOpacity>
                 </View>
-
-                <Text style={styles.headerText}>Past Entries</Text>
-                <FlatList
-                    data={entries}
-                    keyExtractor={(item) => item.id}
-                    contentContainerStyle={{ paddingBottom:24 }}
-                    renderItem={({ item }) => {
-                        const dateLabel = item.dateISO ? new Date(item.dateISO).toLocaleDateString() : item.id;
-                        const labels = toSymptomLabels(item.symptoms);
-                        const preview = labels.slice(0, 2).join(', ');
-                        const extra = labels.length > 2 ? ` +${labels.length - 2} more` : '';
-                        return (
-                            <Pressable
-                              style={styles.row}
-                              onPress={() => router.push({ pathname: '/pastEntries/listDay', params: { day: item.id } })}
-                            >
-                                <View style={{ flex: 1 }}>
-                                    <Text style={styles.rowTitle}>{dateLabel}</Text>
-                                    {labels.length > 0 ? (
-                                        <Text style={styles.rowSubtitle} numberOfLines={1}>{preview}{extra}</Text>
-                                    ) : (
-                                        <Text style={styles.rowSubtitle}>(no symptoms)</Text>
-                                    )}
-                                    {item.notes ? <Text style={styles.notes} numberOfLines={1}>{item.notes}</Text> : null}
-                                </View>
-                                <Text style={styles.chevron}>›</Text>
-                            </Pressable>
-                        );
-                    }}
-                />
+                {isEmpty ? (
+                    <View style={styles.emptyWrap}>
+                        <Text style={styles.headerText}>Past Entries will be displayed here.</Text>
+                        <Text style={styles.emptyText}>No entries yet.</Text>
+                    </View>
+                ) : (
+                    <>
+                        
+                        <FlatList
+                            data={entries}
+                            keyExtractor={(item) => item.id}
+                            contentContainerStyle={{ paddingBottom: 24, paddingHorizontal:16, paddingTop:8 }}
+                            renderItem={({ item }) => {
+                                const dateLabel = item.dateISO ? new Date(item.dateISO).toLocaleDateString() : item.id;
+                                const labels = toSymptomLabels(item.symptoms);
+                                const preview = labels.slice(0, 2).join(', ');
+                                const extra = labels.length > 2 ? ` +${labels.length - 2} more` : '';
+                                return (
+                                    <Pressable
+                                        style={styles.row}
+                                        onPress={() => router.push({ pathname: '/pastEntries/listDay', params: { day: item.id } })}
+                                    >
+                                        <View style={{ flex: 1 }}>
+                                            <Text style={styles.rowTitle}>{dateLabel}</Text>
+                                            {labels.length > 0 ? (
+                                                <Text style={styles.rowSubtitle} numberOfLines={1}>{preview}{extra}</Text>
+                                            ) : (
+                                                <Text style={styles.rowSubtitle}>(no symptoms)</Text>
+                                            )}
+                                            {item.notes ? <Text style={styles.notes} numberOfLines={1}>{item.notes}</Text> : null}
+                                        </View>
+                                        <Text style={styles.chevron}>›</Text>
+                                    </Pressable>
+                                );
+                            }}
+                        />
+                    </>
+                )}
             </View>
         );
     }
@@ -117,12 +113,17 @@ export default function PastEntriesList() {
 
 
 const styles = StyleSheet.create({
+    screen: { flex:1, backgroundColor:'#FFF' },
     center: { flex:1, alignItems:'center', justifyContent:'center', paddingHorizontal:16 },
-    headerRow: { flexDirection:'row', alignItems:'center', justifyContent:'space-between', marginTop:40 },
-    title: { fontSize:20, fontWeight:'700' },
+    topHeader: { backgroundColor:'#CDD9F6', height: 120, alignItems:'center', justifyContent:'center' },
+    headerTitle: { fontSize:20, fontWeight:'bold', marginTop: 60 },
+    controlsRow: { paddingHorizontal:16, paddingTop:12, paddingBottom:0, flexDirection:'row', alignItems:'center', justifyContent:'flex-start' },
     headerText: { marginTop:15, fontSize:20, fontWeight:'bold', marginBottom: 15, textAlign:'center' },
+    emptyWrap: { flex:1, alignItems:'center', justifyContent:'center', paddingHorizontal:32 },
+    emptyText: { fontSize:18, fontWeight:'600', marginTop:6 },
     goBackButton: {
-        marginTop: 20,
+        marginTop: 8,
+        marginBottom: 12,
         paddingVertical: 10,
         paddingHorizontal: 16,
         borderRadius: 10,

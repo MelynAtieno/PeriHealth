@@ -76,6 +76,7 @@ export default function PastEntryDetail() {
   return (
     <ScrollView style={{flex:1}} contentContainerStyle={{paddingBottom:40}}>
       <View style={styles.screenPad}>
+        
         <TouchableOpacity style={styles.backBtn} onPress={() => router.back()}><Text style={styles.backText}>GO BACK</Text></TouchableOpacity>
   <Text style={styles.titleCentered}>Entry Details</Text>
         <View style={styles.card}>
