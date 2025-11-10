@@ -50,7 +50,7 @@ export default function PastEntryDetail() {
     return (
       <View style={styles.center}>
         <Text>Missing entry id.</Text>
-        <TouchableOpacity style={styles.backBtn} onPress={() => router.back()}><Text style={styles.backText}>GO BACK</Text></TouchableOpacity>
+        <TouchableOpacity style={styles.goBackButton} onPress={() => router.back()}><Text style={{ fontWeight: 'bold' }}>GO BACK</Text></TouchableOpacity>
       </View>
     );
   }
@@ -61,7 +61,7 @@ export default function PastEntryDetail() {
     return (
       <View style={styles.center}>
         <Text>Entry not found for {dayParam}.</Text>
-        <TouchableOpacity style={styles.backBtn} onPress={() => router.back()}><Text style={styles.backText}>GO BACK</Text></TouchableOpacity>
+        <TouchableOpacity style={styles.goBackButton} onPress={() => router.back()}><Text style={{ fontWeight: 'bold' }}>GO BACK</Text></TouchableOpacity>
       </View>
     );
   }
@@ -74,11 +74,17 @@ export default function PastEntryDetail() {
   const createdAtLabel = entry.createdAt && entry.createdAt.toDate ? entry.createdAt.toDate().toLocaleString() : '—';
 
   return (
-    <ScrollView style={{flex:1}} contentContainerStyle={{paddingBottom:40}}>
+    <View style={{flex:1}}>
+      <View style={styles.topHeader}>
+        <Text style={styles.headerTitle}>Entry Details</Text>
+      </View>
+      <View style={styles.controlsRow}>
+        <TouchableOpacity style={styles.goBackButton} onPress={() => router.back()}>
+          <Text style={{ fontWeight: 'bold' }}>GO BACK</Text>
+        </TouchableOpacity>
+      </View>
+      <ScrollView style={{flex:1}} contentContainerStyle={{paddingBottom:40}}>
       <View style={styles.screenPad}>
-        
-        <TouchableOpacity style={styles.backBtn} onPress={() => router.back()}><Text style={styles.backText}>GO BACK</Text></TouchableOpacity>
-  <Text style={styles.titleCentered}>Entry Details</Text>
         <View style={styles.card}>
           <Text style={styles.sectionTitle}>Date</Text>
           <Text style={styles.value}>{dateLabel}</Text>
@@ -99,18 +105,18 @@ export default function PastEntryDetail() {
           {entry.notes ? <Text style={styles.value}>{entry.notes}</Text> : <Text style={styles.muted}>(No notes)</Text>}
         </View>
       </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   center: { flex:1, alignItems:'center', justifyContent:'center', paddingHorizontal:16 },
-  screenPad: { paddingTop:40, paddingHorizontal:16, marginTop:50 },
-  titleCentered: { fontSize:22, fontWeight:'700', marginTop:16, textAlign:'center', marginBottom:8 },
-  cardCentered: { backgroundColor:'#fff', borderRadius:12, padding:16, marginTop:20, width:'90%', alignItems:'center', shadowColor:'#000', shadowOffset:{width:0,height:2}, shadowOpacity:0.1, shadowRadius:4, elevation:2 },
-  chipsWrapCentered: { flexDirection:'row', flexWrap:'wrap', justifyContent:'center' },
-  backBtn: { paddingVertical:10, paddingHorizontal:16, borderRadius:10, width:100, backgroundColor:'#8e8f90ff', alignItems:'center', shadowColor:'#000', shadowOffset:{width:0,height:4}, shadowOpacity:0.3, shadowRadius:3.84 },
-  backText: { fontWeight:'bold' },
+  screenPad: { paddingHorizontal:16, marginTop:0 },
+  topHeader: { backgroundColor:'#CDD9F6', height: 120, alignItems:'center', justifyContent:'center' },
+  headerTitle: { fontSize:20, fontWeight:'bold', marginTop: 60 },
+  controlsRow: { paddingHorizontal:16, paddingTop:12, paddingBottom:0, flexDirection:'row', alignItems:'center', justifyContent:'flex-start' },
+  goBackButton: { marginTop:8, marginBottom: 8, paddingVertical:10, paddingHorizontal:16, borderRadius:10, backgroundColor:'#8e8f90ff', alignItems:'center', shadowColor:'#000', shadowOffset:{width:0,height:4}, shadowOpacity:0.3, shadowRadius:3.84 },
   card: { backgroundColor:'#fff', borderRadius:12, padding:16, marginTop:16, shadowColor:'#000', shadowOffset:{width:0,height:2}, shadowOpacity:0.1, shadowRadius:4, elevation:2 },
   sectionTitle: { fontSize:20, fontWeight:'bold', marginBottom:8 },
   value: { fontSize:15 },
