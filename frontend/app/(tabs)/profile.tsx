@@ -1,6 +1,8 @@
 import React from "react";
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, ActivityIndicator } from "react-native";
 import { useRouter } from "expo-router";
+import { auth, db } from "../../firebaseConfig";
+import { doc, getDoc } from "firebase/firestore";
 
 const styles = StyleSheet.create({
     menuOption: {
@@ -30,6 +32,29 @@ const styles = StyleSheet.create({
 
 export default function ProfileScreen() {
     const router = useRouter();
+    const [username, setUsername] = React.useState<string | null>(null);
+    const [loading, setLoading] = React.useState(true);
+
+    React.useEffect(() => {
+        const user = auth.currentUser;
+        if (!user) { setLoading(false); return; }
+        const fallback = user.displayName || (user.email ? user.email.split('@')[0] : 'User');
+        (async () => {
+            try {
+                const ref = doc(db, 'users', user.uid);
+                const snap = await getDoc(ref);
+                const data: any = snap.exists() ? snap.data() : {};
+                setUsername(data?.username || data?.displayName || fallback);
+            } catch {
+                setUsername(fallback);
+            } finally {
+                setLoading(false);
+            }
+        })();
+    }, []);
+
+    const initialLetter = (username || '').charAt(0).toUpperCase() || 'U';
+
     return (
         <ScrollView>
             <View style={{
@@ -40,29 +65,39 @@ export default function ProfileScreen() {
                 borderBottomRightRadius:15,
                 shadowColor: "#000",            
                 }}>
-            <View style={{
-                flexDirection:'row', 
-                alignItems:'center', 
-                gap:15, 
-                margin:15,
-                padding: 10,
-                }}>
-            <View style ={{
-                width:50,
-                height:50,
-                borderRadius:50,
-                backgroundColor:'#cfc7d6ff',
-                shadowColor: "#000",
-                shadowOffset: {width: 0, height: 4},
-                shadowOpacity: 0.3,
-                shadowRadius: 3.84,
-            }}><Text style={{
-                fontSize: 40,
-                fontWeight: 'bold',
-                textAlign: 'center',
-                }}>J</Text></View>
-            <Text style={{fontSize:25, fontWeight:'bold'}}>Jane Doe</Text>
-            </View>
+                <View style={{
+                    flexDirection:'row', 
+                    alignItems:'center', 
+                    gap:15, 
+                    margin:15,
+                    padding: 10,
+                    }}>
+                    <View style ={{
+                        width:50,
+                        height:50,
+                        borderRadius:50,
+                        backgroundColor:'#cfc7d6ff',
+                        shadowColor: "#000",
+                        shadowOffset: {width: 0, height: 4},
+                        shadowOpacity: 0.3,
+                        shadowRadius: 3.84,
+                        alignItems:'center',
+                        justifyContent:'center'
+                    }}>
+                        <Text style={{
+                            fontSize: 28,
+                            fontWeight: 'bold',
+                            textAlign: 'center',
+                        }}>{initialLetter}</Text>
+                    </View>
+                    {loading ? (
+                        <ActivityIndicator />
+                    ) : auth.currentUser ? (
+                        <Text style={{fontSize:25, fontWeight:'bold'}}>{username}</Text>
+                    ) : (
+                        <Text style={{fontSize:18}}>Not logged in</Text>
+                    )}
+                </View>
             </View>
 
             <View>
@@ -87,13 +122,10 @@ export default function ProfileScreen() {
 
             <View
                 style={{alignItems:'center', marginTop:20, marginBottom:30}}>
-            <TouchableOpacity style={styles.button} onPress={() => {}}>
-                <Text style={{fontWeight:'bold'}}>LOG OUT</Text>
+            <TouchableOpacity style={styles.button} onPress={() => { /* TODO: implement logout */ }} disabled={loading || !auth.currentUser}>
+                <Text style={{fontWeight:'bold'}}>{auth.currentUser ? 'LOG OUT' : 'LOG IN'}</Text>
             </TouchableOpacity>
-            {/* Signup navigation button for testing */}
-            <TouchableOpacity style={[styles.button, {marginTop: 10, backgroundColor: '#A3D8F4'}]} onPress={() => router.push('/signup')}>
-                <Text style={{fontWeight:'bold'}}>Go to Signup</Text>
-            </TouchableOpacity>
+        
             </View>
         </ScrollView>
     )
