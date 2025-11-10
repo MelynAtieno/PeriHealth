@@ -156,7 +156,7 @@ export default function SymptomsScreen() {
             setExportLoading(false);
             const canShare = await Sharing.isAvailableAsync();
             if (!canShare) {
-                alert('Sharing not available on this device. PDF saved locally at:\n' + uri);
+                alert('Unable to share on this device. PDF saved locally at:\n' + uri);
             } else {
                 await Sharing.shareAsync(uri, { UTI: 'com.adobe.pdf', mimeType: 'application/pdf' });
             }
