@@ -3,6 +3,8 @@ import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from "react-nati
 import { useRouter } from "expo-router";
 import { db, auth } from "../../firebaseConfig";
 import { collection, getDocs, query, orderBy, Timestamp, doc, getDoc } from "firebase/firestore";
+import * as Print from 'expo-print';
+import * as Sharing from 'expo-sharing';
 import { toSymptomLabels } from "../constants/symptomLabels";
 
 const styles = StyleSheet.create({
@@ -45,6 +47,7 @@ export default function SymptomsScreen() {
     const [exportLoading, setExportLoading] = React.useState(false);
     const [exportRows, setExportRows] = React.useState<ExportEntry[]>([]);
     const [exportHtml, setExportHtml] = React.useState<string>("");
+    const [pdfLoading, setPdfLoading] = React.useState(false);
 
     const escapeHtml = (s: string) =>
         s
@@ -159,6 +162,32 @@ export default function SymptomsScreen() {
 
     }
 
+    const handleGeneratePdf = async () => {
+        if (!exportHtml) {
+            alert('No data prepared. Tap "Download/Share Symptoms" first.');
+            return;
+        }
+        setPdfLoading(true);
+        try {
+            const { uri } = await Print.printToFileAsync({ html: exportHtml });
+            // On iOS you can optionally rename via FileSystem.moveAsync if desired.
+            const canShare = await Sharing.isAvailableAsync();
+            if (!canShare) {
+                alert('Sharing not available on this device. PDF saved locally at:\n' + uri);
+                return;
+            }
+            await Sharing.shareAsync(uri, {
+                UTI: 'com.adobe.pdf',
+                mimeType: 'application/pdf'
+            });
+        } catch (e: any) {
+            console.error('PDF generation/share error:', e);
+            alert(e?.message || 'Failed to generate/share PDF.');
+        } finally {
+            setPdfLoading(false);
+        }
+    };
+
     return (
         <ScrollView>
 
@@ -175,8 +204,13 @@ export default function SymptomsScreen() {
             <View style={{marginTop:20}}>
             <TouchableOpacity style={styles.symptomsMenu} onPress={() => router.push('../pastEntries/entriesList')}>
                 <Text style={{fontWeight:'bold', fontSize: 20}}>View Past Entries</Text></TouchableOpacity>
-            <TouchableOpacity style={styles.symptomsMenu} onPress={handleShareSymptoms} disabled={exportLoading}>
-                <Text style={{fontWeight:'bold', fontSize:20}}>{exportLoading ? 'Preparing…' : 'Download/Share Symptoms'}</Text></TouchableOpacity>
+            <TouchableOpacity style={styles.symptomsMenu} onPress={handleShareSymptoms} disabled={exportLoading || pdfLoading}>
+                <Text style={{fontWeight:'bold', fontSize:20}}>{exportLoading ? 'Fetching…' : 'Download/Share Symptoms'}</Text></TouchableOpacity>
+            {exportHtml ? (
+                <TouchableOpacity style={styles.symptomsMenu} onPress={handleGeneratePdf} disabled={pdfLoading}>
+                    <Text style={{fontWeight:'bold', fontSize:20}}>{pdfLoading ? 'Generating PDF…' : 'Generate PDF'}</Text>
+                </TouchableOpacity>
+            ) : null}
             </View>
         </ScrollView>
     );
