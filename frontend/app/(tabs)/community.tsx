@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { ScrollView, View, Text, StyleSheet, Platform, Keyboard, RefreshControl } from "react-native";
+import { ScrollView, View, Text, StyleSheet, Platform, Keyboard, RefreshControl, Pressable } from "react-native";
 import { TextInput } from "react-native-paper";
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 
 export default function CommunityScreen() {
@@ -55,22 +56,28 @@ export default function CommunityScreen() {
             </ScrollView>
 
             <View style={[styles.inputBar, { position: 'absolute', left: 0, right: 0, bottom: effectiveKeyboardHeight ? effectiveKeyboardHeight + 2 : 6, elevation: 6 }]}> 
-                <TextInput
-                    label="Type your message..."
-                    mode="outlined"
-                    value={message}
-                    onChangeText={setMessage}
-                    style={styles.textInput}
-                    right={
-                        <TextInput.Icon
-                            icon="send"
-                            onPress={handleSend}
-                            forceTextInputFocus={false}
-                        />
-                    }
-                    returnKeyType="send"
-                    onSubmitEditing={handleSend}
-                />
+                <View style={styles.inputRow}>
+                            <TextInput
+                                placeholder="Type your message..."
+                                mode="flat"
+                                value={message}
+                                onChangeText={setMessage}
+                                style={[styles.textInput, styles.textInputInner]}
+                                multiline={true}
+                                numberOfLines={4}
+                                textAlignVertical="top"
+                                contentStyle={{ minHeight: 40, maxHeight: 120, paddingVertical: 8 }}
+                                theme={{ colors: { placeholder: '#6b7280', text: '#000', primary: '#ece6f0' } }}
+                                selectionColor="#ece6f0"
+                            />
+                    <Pressable
+                        onPress={handleSend}
+                        disabled={!message.trim()}
+                        style={({ pressed }) => [styles.sendButton, { opacity: pressed ? 0.7 : 1, justifyContent: 'center', alignItems: 'center' }]}
+                    >
+                        <MaterialIcons name="send" size={40} color={message.trim() ? '#000' : '#9b9da0ff'} />
+                    </Pressable>
+                </View>
             </View>
     
         </View>
@@ -105,10 +112,25 @@ const styles = StyleSheet.create({
         backgroundColor: "#fff",
         padding: 10,
         zIndex: 10,
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: -4 },
+        shadowOpacity: 0.2,
+        shadowRadius: 3.5,
         },
     textInput: {
         backgroundColor: "#fff",
-        borderRadius: 10
+    },
+    inputRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    textInputInner: {
+        flex: 1,
+        marginRight: 6,
+    },
+    sendButton: {
+        margin: 0,
+        color: '#000'
     },
 
 });
