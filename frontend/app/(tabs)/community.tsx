@@ -1,32 +1,50 @@
-import React, { useState } from "react";
-import { ScrollView, View, Text, StyleSheet, KeyboardAvoidingView, Platform } from "react-native";
+import React, { useState, useEffect } from "react";
+import { ScrollView, View, Text, StyleSheet, Platform, Keyboard } from "react-native";
 import { TextInput } from "react-native-paper";
 
 
 export default function CommunityScreen() {
     const [message, setMessage] = useState("");
+    const [keyboardHeight, setKeyboardHeight] = useState(0);
+
+    // Limit effective keyboard height to 230px to avoid excessive gaps on some devices
+    const effectiveKeyboardHeight = Math.min(keyboardHeight || 0, 230);
 
     const handleSend = () => {
         const trimmed = message.trim();
         if (!trimmed) return;
-        // TODO: Wire up to community messages backend when ready
-        console.log("Sending message:", trimmed);
+        // TODO: Wire up to community messages backend
         setMessage("");
     };
 
+    useEffect(() => {
+        const showEvent = Platform.OS === "ios" ? "keyboardWillShow" : "keyboardDidShow";
+        const hideEvent = Platform.OS === "ios" ? "keyboardWillHide" : "keyboardDidHide";
+
+        const onShow = (e: any) => {
+            const h = e.endCoordinates ? e.endCoordinates.height : 0;
+            setKeyboardHeight(h);
+        };
+        const onHide = () => setKeyboardHeight(0);
+
+        const showSub = Keyboard.addListener(showEvent, onShow);
+        const hideSub = Keyboard.addListener(hideEvent, onHide);
+
+        return () => {
+            showSub.remove();
+            hideSub.remove();
+        };
+    }, []);
+
     return (
-        <KeyboardAvoidingView
-            style={styles.container}
-            behavior={Platform.OS === "ios" ? "padding" : undefined}
-            keyboardVerticalOffset={Platform.OS === "ios" ? 90 : 0}
-        >
+        <View style={styles.container}>
             <ScrollView contentContainerStyle={styles.content}>
                 <View style={styles.placeholder}> 
                     
                 </View>
             </ScrollView>
 
-            <View style={styles.inputBar}>
+            <View style={[styles.inputBar, { position: 'absolute', left: 0, right: 0, bottom: effectiveKeyboardHeight ? effectiveKeyboardHeight + 2 : 6, elevation: 6 }]}> 
                 <TextInput
                     label="Type your message..."
                     mode="outlined"
@@ -44,7 +62,8 @@ export default function CommunityScreen() {
                     onSubmitEditing={handleSend}
                 />
             </View>
-        </KeyboardAvoidingView>
+    
+        </View>
     );
 }
 
@@ -55,7 +74,7 @@ const styles = StyleSheet.create({
     },
     content: {
         padding: 16,
-        paddingBottom: 96, // keep content above the input bar
+        paddingBottom: 8,
     },
     placeholder: {
         alignItems: "center",
@@ -63,20 +82,23 @@ const styles = StyleSheet.create({
     },
     placeholderTitle: {
         fontSize: 20,
-        fontWeight: "600",
+        fontWeight: "bold",
         marginBottom: 8,
     },
     placeholderText: {
         fontSize: 14,
-        color: "#666",
+        color: "#505050ff",
     },
     inputBar: {
         borderTopWidth: StyleSheet.hairlineWidth,
         borderTopColor: "#e5e7eb",
         backgroundColor: "#fff",
         padding: 10,
-    },
+        zIndex: 10,
+        },
     textInput: {
         backgroundColor: "#fff",
+        borderRadius: 10
     },
+
 });
