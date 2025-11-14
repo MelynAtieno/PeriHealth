@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { ScrollView, View, Text, StyleSheet, Platform, Keyboard } from "react-native";
+import { ScrollView, View, Text, StyleSheet, Platform, Keyboard, RefreshControl } from "react-native";
 import { TextInput } from "react-native-paper";
 
 
 export default function CommunityScreen() {
     const [message, setMessage] = useState("");
     const [keyboardHeight, setKeyboardHeight] = useState(0);
+    const [refreshing, setRefreshing] = useState(false);
 
     // Limit effective keyboard height to 230px to avoid excessive gaps on some devices
     const effectiveKeyboardHeight = Math.min(keyboardHeight || 0, 230);
@@ -36,9 +37,18 @@ export default function CommunityScreen() {
         };
     }, []);
 
+    const onRefresh = () => {
+        // Placeholder refresh behavior: simulate reload
+        setRefreshing(true);
+        setTimeout(() => setRefreshing(false), 800);
+    };
+
     return (
         <View style={styles.container}>
-            <ScrollView contentContainerStyle={styles.content}>
+            <ScrollView
+                contentContainerStyle={styles.content}
+                refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+            >
                 <View style={styles.placeholder}> 
                     
                 </View>

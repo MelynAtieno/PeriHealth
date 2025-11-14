@@ -222,7 +222,7 @@ export default function SymptomsForm() {
                 <View style={{alignItems:'center', marginTop:10, marginBottom:5}}>
                     <TextInput
                         placeholder="Add notes..."
-                        placeholderTextColor="#a3a3a3ff"
+                        placeholderTextColor="#292929ff"
                         value={notes}
                         onChangeText={setNotes}
                         multiline
@@ -230,7 +230,7 @@ export default function SymptomsForm() {
                             height: 100,
                             width: 380,
                             borderWidth: 1,
-                            borderColor: '#ccc',
+                            borderColor: '#8f8f8fff',
                             borderRadius: 10,
                             padding: 5,        
                             textAlignVertical: 'top',
