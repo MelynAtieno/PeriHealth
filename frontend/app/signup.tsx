@@ -1,5 +1,5 @@
 import React from "react"
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert, ActivityIndicator } from "react-native";
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert, ActivityIndicator, TouchableWithoutFeedback, Keyboard } from "react-native";
 import { auth, db } from "../firebaseConfig";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "expo-router";
@@ -74,12 +74,12 @@ export default function SignupScreen() {
     }
 
     return (
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} accessible={false}>
         <View style={{        
             padding: 20,
             alignItems: 'center',
             backgroundColor: '#ffffff',
             height: '100%'
-         
         }}>
             
             <Text style={{
@@ -108,6 +108,7 @@ export default function SignupScreen() {
 
 
         </View>
+        </TouchableWithoutFeedback>
     )
 }
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { useRouter } from "expo-router";
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert, ActivityIndicator } from "react-native";
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert, ActivityIndicator, TouchableWithoutFeedback, Keyboard } from "react-native";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebaseConfig";
 import { getFriendlyAuthErrorMessage } from '../helpers/authErrors';
@@ -64,6 +64,7 @@ export default function LoginScreen() {
     };
 
     return (
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} accessible={false}>
         <View style={{        
             padding: 20,
             alignItems: 'center',
@@ -118,6 +119,7 @@ export default function LoginScreen() {
             
             <TouchableOpacity onPress={() =>router.push("/signup")}><Text style={{ fontWeight: 'bold', marginTop: 20,  fontSize: 20}}>SIGN UP</Text></TouchableOpacity>
         </View>
+        </TouchableWithoutFeedback>
     )
 }
 
