@@ -12,6 +12,21 @@ PeriHealth is a React Native (Expo) app that aims to support women experiencing 
 - Friendly error messages and keyboard dismissal on auth screens
 - Basic tests for auth and symptom logging flows (Jest + Testing Library)
 
+## Screenshots
+
+<p align="center">
+  <img src="assets/screenshots/signUp.jpg" alt="Sign Up" width="260" />
+  <img src="assets/screenshots/logIn.jpg" alt="Log In" width="260" />
+  <img src="assets/screenshots/home.jpg" alt="Home Page" width="260" />
+  <img src="assets/screenshots/symptomForm.jpg" alt="Symptom Form" width="260" />
+  <img src="assets/screenshots/pastEntries.jpg" alt="Past Entries" width="260" />
+  <img src="assets/screenshots/entryDetails.jpg" alt="Community Chat" width="260" />
+  <img src="assets/screenshots/insights.jpg" alt="Insights" width="260" />
+  <img src="assets/screenshots/communityChat.jpg" alt="Community Chat" width="260" />
+  <img src="assets/screenshots/profile.jpg" alt="Community Chat" width="260" />
+</p>
+
+
 ## Tech stack
 
 - React Native + Expo Router
