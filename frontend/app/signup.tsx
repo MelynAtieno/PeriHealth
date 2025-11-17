@@ -94,7 +94,7 @@ export default function SignupScreen() {
             <TextInput placeholder="Email" value={email} onChangeText={setEmail} placeholderTextColor="#a3a3a3ff" style={styles.input}/>
             <TextInput placeholder="Password" value={password} secureTextEntry onChangeText={setPassword} placeholderTextColor="#a3a3a3ff" style={styles.input}/>
 
-                        <TouchableOpacity style={styles.button} onPress={onSubmit} disabled={isLoading}>
+                <TouchableOpacity style={styles.button} onPress={onSubmit} disabled={isLoading} accessibilityRole="button" testID="signupButton">
                             {isLoading ? (
                                 <ActivityIndicator />
                             ) : (

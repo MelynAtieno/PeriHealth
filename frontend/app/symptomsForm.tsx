@@ -1,4 +1,4 @@
-import { ScrollView, Text, TouchableOpacity, View, StyleSheet, TextInput} from "react-native";
+import { ScrollView, Text, TouchableOpacity, View, StyleSheet, TextInput, Alert } from "react-native";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import { Checkbox } from "react-native-paper";
@@ -97,14 +97,14 @@ export default function SymptomsForm() {
 
         // Validate input. No empty fields
         if(!selectedSymptoms.length && !notes) {
-            alert("Please select at least one symptom or add notes.");
+            Alert.alert("Validation", "Please select at least one symptom or add notes.");
             return;
         }
 
         // Get the logged in user
         const user = auth.currentUser;
         if(!user) {
-            alert("You must be logged in to save symptoms.");
+            Alert.alert("Not logged in", "You must be logged in to save symptoms.");
             setLoading(false);
             return;
         }
@@ -126,12 +126,12 @@ export default function SymptomsForm() {
         // Save data to Firestore
         try{
             await setDoc(docRef, symptomData, { merge: true });
-            alert("Symptoms saved successfully!");    
+            Alert.alert("Success", "Symptoms saved successfully!");    
             router.back();
             setSymptoms(Object.fromEntries(Object.keys(symptoms).map(key => [key, false])) as SymptomsState);
             setNotes('');
         } catch (error) {
-            alert( error instanceof Error? error.message: "Error saving symptoms. Please try again.");
+            Alert.alert("Error", error instanceof Error? error.message: "Error saving symptoms. Please try again.");
         
         } finally {
             setLoading(false);
