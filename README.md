@@ -44,7 +44,7 @@ cd frontend
 npm install
 ```
 
-2) Start the app on Expo Go
+2) Start the app on Expo Go (Install Expo Go on your device)
 
 On your terminal, run:
 
@@ -53,14 +53,14 @@ npx expo start
 ```
 
 Then open in:
-- Expo Go on a device (scan the QR)
+- Expo Go (scan the QR)
 - Android emulator: `npm run android`
 
 ## Firebase setup
 
-Add a `firebaseConfig.js` file in the `frontend` folder.
-Create a firebase project and enable Email/Password authentication and Firestore database in test mode.
-Update `firebaseConfig.js` with your Firebase project values. The file should be wired for React Native persistence. Create these Firestore collections when using the app:
+1) Add a `firebaseConfig.js` file in the `frontend` folder.
+2) Create a firebase project and enable Email/Password authentication and Firestore database in test mode.
+3) Update `firebaseConfig.js` with your Firebase project values. The file should be wired for React Native persistence. 4) Create these Firestore collections when using the app:
 
 - `users/{uid}/symptoms/{YYYY-MM-DD}` documents with fields: `userId`, `date` (ISO string), `symptoms` (string[]), `notes` (string|null), `createdAt` (serverTimestamp)
 - `communityMessages/{autoId}` with fields: `text`, `userId`, `createdAt` (serverTimestamp)
