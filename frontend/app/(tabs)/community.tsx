@@ -56,7 +56,7 @@ export default function CommunityScreen() {
             if (!user) throw new Error("Please log in to send messages.");
             await addDoc(collection(db, "communityMessages"), {
                 text,
-                senderId: user.uid,
+                userId: user.uid,
                 createdAt: serverTimestamp(),
             });
             setInputText("");
@@ -79,7 +79,7 @@ export default function CommunityScreen() {
                 return {
                     id: doc.id,
                     text: data.text,
-                    senderId: data.senderId,
+                    userId: data.senderId,
                     createdAt: data.createdAt,
                 };
             });
