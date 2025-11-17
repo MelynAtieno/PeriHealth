@@ -63,7 +63,7 @@ Create a firebase project and enable Email/Password authentication and Firestore
 Update `firebaseConfig.js` with your Firebase project values. The file should be wired for React Native persistence. Create these Firestore collections when using the app:
 
 - `users/{uid}/symptoms/{YYYY-MM-DD}` documents with fields: `userId`, `date` (ISO string), `symptoms` (string[]), `notes` (string|null), `createdAt` (serverTimestamp)
-- `communityMessages/{autoId}` with fields: `text`, `senderId`, `createdAt` (serverTimestamp)
+- `communityMessages/{autoId}` with fields: `text`, `userId`, `createdAt` (serverTimestamp)
 
 Suggested Firestore security rules (adjust to your needs):
 
