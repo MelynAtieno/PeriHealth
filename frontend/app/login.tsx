@@ -57,7 +57,7 @@ export default function LoginScreen() {
             console.error('Login error', err);
             const friendly = getFriendlyAuthErrorMessage(err);
             setError(friendly);
-            Alert.alert('Sign in failed', friendly);
+            Alert.alert('Log in failed', friendly);
         } finally {
             setLoading(false);
         }
