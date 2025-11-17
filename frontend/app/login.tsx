@@ -1,8 +1,9 @@
 import React from "react";
 import { useRouter } from "expo-router";
-import { View, Text, TextInput, StyleSheet, TouchableOpacity} from "react-native";
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert, ActivityIndicator } from "react-native";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebaseConfig";
+import { getFriendlyAuthErrorMessage } from '../helpers/authErrors';
 
 const styles = StyleSheet.create({
     input: {
@@ -52,14 +53,11 @@ export default function LoginScreen() {
             await signInWithEmailAndPassword(auth, email, password);
             router.replace('/(tabs)/symptoms');
 
-        } catch (error) {
-            let errorMessage = "Login failed!";
-            if (error instanceof Error) {
-                errorMessage = error.message;
-            } else if (typeof error === "string") {
-                errorMessage = error;
-            }
-            setError(errorMessage);
+        } catch (err: any) {
+            console.error('Login error', err);
+            const friendly = getFriendlyAuthErrorMessage(err);
+            setError(friendly);
+            Alert.alert('Sign in failed', friendly);
         } finally {
             setLoading(false);
         }
@@ -109,10 +107,16 @@ export default function LoginScreen() {
                 onPress={handleLogin}
                 disabled={loading}
             >
-                <Text style={{ fontWeight: 'bold' }}>
-                    {loading ? 'Logging in...' : 'LOG IN'}
-                </Text>
+                {loading ? (
+                    <ActivityIndicator />
+                ) : (
+                    <Text style={{ fontWeight: 'bold' }}>LOG IN</Text>
+                )}
             </TouchableOpacity>
+
+             <Text style={{marginTop: 20, fontSize: 15}}>Don't have an account?</Text>
+            
+            <TouchableOpacity onPress={() =>router.push("/signup")}><Text style={{ fontWeight: 'bold', marginTop: 20,  fontSize: 20}}>SIGN UP</Text></TouchableOpacity>
         </View>
     )
 }

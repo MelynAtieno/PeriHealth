@@ -1,9 +1,10 @@
 import React from "react"
-import { View, Text, TextInput, StyleSheet, TouchableOpacity} from "react-native";
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert, ActivityIndicator } from "react-native";
 import { auth, db } from "../firebaseConfig";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "expo-router";
 import { doc, setDoc } from "firebase/firestore";
+import { getFriendlyAuthErrorMessage } from '../helpers/authErrors';
 
 const styles = StyleSheet.create({
     input: {
@@ -40,9 +41,17 @@ export default function SignupScreen() {
     const [username, setUsername] = React.useState('');
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
+    const [isLoading, setIsLoading] = React.useState(false);
 
     const router = useRouter();
     const onSubmit = async() =>{
+        // basic client-side validation
+        if (!email || !password) {
+            Alert.alert('Missing fields', 'Please provide an email and password.');
+            return;
+        }
+
+        setIsLoading(true);
         try{
             const userCredentials = await createUserWithEmailAndPassword(auth, email, password);
             const uid = userCredentials.user.uid;
@@ -55,8 +64,12 @@ export default function SignupScreen() {
 
             // Redirect to main app screen
             router.replace('/(tabs)/symptoms');
-        } catch (error){
+        } catch (error: any){
             console.error("Signup failed!", error);
+            const friendly = getFriendlyAuthErrorMessage(error);
+            Alert.alert('Sign up failed', friendly);
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -79,9 +92,15 @@ export default function SignupScreen() {
 
             <TextInput placeholder="Username" value={username} onChangeText={setUsername} placeholderTextColor="#a3a3a3ff" style={styles.input}/>
             <TextInput placeholder="Email" value={email} onChangeText={setEmail} placeholderTextColor="#a3a3a3ff" style={styles.input}/>
-            <TextInput placeholder="Password" value={password} onChangeText={setPassword} placeholderTextColor="#a3a3a3ff" style={styles.input}/>
+            <TextInput placeholder="Password" value={password} secureTextEntry onChangeText={setPassword} placeholderTextColor="#a3a3a3ff" style={styles.input}/>
 
-            <TouchableOpacity style={styles.button} onPress={onSubmit}><Text style={{ fontWeight: 'bold'}}>SIGN UP</Text></TouchableOpacity>
+                        <TouchableOpacity style={styles.button} onPress={onSubmit} disabled={isLoading}>
+                            {isLoading ? (
+                                <ActivityIndicator />
+                            ) : (
+                                <Text style={{ fontWeight: 'bold'}}>SIGN UP</Text>
+                            )}
+                        </TouchableOpacity>
 
             <Text style={{marginTop: 20, fontSize: 15}}>Already have an account?</Text>
 
