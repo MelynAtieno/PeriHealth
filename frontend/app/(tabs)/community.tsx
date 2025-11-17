@@ -1,23 +1,24 @@
 import React, { useState, useEffect } from "react";
-import { ScrollView, View, Text, StyleSheet, Platform, Keyboard, RefreshControl, Pressable } from "react-native";
+import {View, StyleSheet, Platform, Keyboard, RefreshControl, Pressable, FlatList, ActivityIndicator} from "react-native";
 import { TextInput } from "react-native-paper";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { addDoc, collection, serverTimestamp, query, orderBy, onSnapshot, limit} from "firebase/firestore";
+import { auth, db } from "../../firebaseConfig";
+import MessageBubble from "../../components/MessageBubble";
 
 
 export default function CommunityScreen() {
-    const [message, setMessage] = useState("");
+    const [messages, setMessages] = useState<Array<any>>([]);
+    const [inputText, setInputText] = useState<string>("");
+    const [isSending, setIsSending] = useState(false);
     const [keyboardHeight, setKeyboardHeight] = useState(0);
     const [refreshing, setRefreshing] = useState(false);
+
+    const flatListRef = React.useRef<FlatList<any> | null>(null);
 
     // Limit effective keyboard height to 230px to avoid excessive gaps on some devices
     const effectiveKeyboardHeight = Math.min(keyboardHeight || 0, 230);
 
-    const handleSend = () => {
-        const trimmed = message.trim();
-        if (!trimmed) return;
-        // TODO: Wire up to community messages backend
-        setMessage("");
-    };
 
     useEffect(() => {
         const showEvent = Platform.OS === "ios" ? "keyboardWillShow" : "keyboardDidShow";
@@ -44,38 +45,97 @@ export default function CommunityScreen() {
         setTimeout(() => setRefreshing(false), 800);
     };
 
+    const handleSend = async () => {
+        const text = inputText.trim();
+        if (!text) return;
+
+        setIsSending(true);
+
+        try {
+            const user = auth.currentUser;
+            if (!user) throw new Error("Please log in to send messages.");
+            await addDoc(collection(db, "communityMessages"), {
+                text,
+                senderId: user.uid,
+                createdAt: serverTimestamp(),
+            });
+            setInputText("");
+        } catch (error) {
+            alert("Error sending message");
+        } finally{
+            setIsSending(false);
+        }
+    }
+
+    useEffect(() => {
+        const q = query(
+            collection(db, "communityMessages"),
+            orderBy("createdAt", "asc"),
+            limit(100));
+        
+        const unsubscribe = onSnapshot(q, (snapshot) => {
+            const msgs = snapshot.docs.map((doc) => {
+                const data = doc.data();
+                return {
+                    id: doc.id,
+                    text: data.text,
+                    senderId: data.senderId,
+                    createdAt: data.createdAt,
+                };
+            });
+            setMessages(msgs);
+
+            // Scroll to bottom when new messages arrive
+            requestAnimationFrame(() => {
+                flatListRef.current?.scrollToEnd({ animated: true });
+            });
+        });
+        
+        return () => unsubscribe();
+    }, []);
+
     return (
         <View style={styles.container}>
-            <ScrollView
+            <FlatList
+                ref={flatListRef}
+                data={messages}
+                keyExtractor={(item) => item.id}
+                renderItem={({ item }) => (
+                    <View style={{ marginBottom: 12 }}>
+                        <MessageBubble message={item} isMe={item.senderId === auth.currentUser?.uid} />
+                    </View>
+                )}
                 contentContainerStyle={styles.content}
                 refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-            >
-                <View style={styles.placeholder}> 
-                    
-                </View>
-            </ScrollView>
+            />
+                
+            
 
             <View style={[styles.inputBar, { position: 'absolute', left: 0, right: 0, bottom: effectiveKeyboardHeight ? effectiveKeyboardHeight + 2 : 6, elevation: 6 }]}> 
                 <View style={styles.inputRow}>
                             <TextInput
                                 placeholder="Type your message..."
                                 mode="flat"
-                                value={message}
-                                onChangeText={setMessage}
+                                value={inputText}
+                                onChangeText={setInputText}
                                 style={[styles.textInput, styles.textInputInner]}
                                 multiline={true}
                                 numberOfLines={4}
                                 textAlignVertical="top"
                                 contentStyle={{ minHeight: 40, maxHeight: 120, paddingVertical: 8 }}
-                                theme={{ colors: { placeholder: '#6b7280', text: '#000', primary: '#ece6f0' } }}
-                                selectionColor="#ece6f0"
+                                theme={{ colors: { placeholder: '#6b7280', text: '#000', primary: '#cdd9f6' } }}
+                                selectionColor="#cdd9f6"
                             />
                     <Pressable
                         onPress={handleSend}
-                        disabled={!message.trim()}
+                        disabled={!inputText.trim() || isSending}
                         style={({ pressed }) => [styles.sendButton, { opacity: pressed ? 0.7 : 1, justifyContent: 'center', alignItems: 'center' }]}
                     >
-                        <MaterialIcons name="send" size={40} color={message.trim() ? '#000' : '#9b9da0ff'} />
+                        {isSending ? (
+                            <ActivityIndicator size="small" color="#4F7CFF" />
+                        ) : (
+                        <MaterialIcons name="send" size={40} color={inputText.trim() ? '#6080e9ff' : '#cdd9f6'} />
+                        )}
                     </Pressable>
                 </View>
             </View>
