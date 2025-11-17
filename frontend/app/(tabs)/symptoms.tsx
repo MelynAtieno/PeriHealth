@@ -178,7 +178,7 @@ export default function SymptomsScreen() {
             </View>
 
             <View style={{alignItems:'center', marginTop:20, marginBottom:20}}>
-                <View style={{borderRadius: 200, height: 200, width: 200, backgroundColor:'orange'}}></View>
+                <View style={{borderRadius: 200, height: 200, width: 200, backgroundColor:'#f38b9cff'}}></View>
             <TouchableOpacity style={styles.button} onPress={() => router.push('/symptomsForm')}><Text style={{fontWeight:'bold'}}>LOG SYMPTOMS</Text></TouchableOpacity>
             </View>
 

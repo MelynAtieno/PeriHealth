@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, ScrollView, Alert } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { auth, db } from '../../firebaseConfig';
-import { doc, onSnapshot, Timestamp } from 'firebase/firestore';
+import { doc, onSnapshot, Timestamp, deleteDoc } from 'firebase/firestore';
 import { toSymptomLabels } from '../constants/symptomLabels';
 
 type EntryData = {
@@ -22,6 +22,7 @@ export default function PastEntryDetail() {
   const [loading, setLoading] = React.useState(true);
   const [entry, setEntry] = React.useState<EntryData | null>(null);
   const [notFound, setNotFound] = React.useState(false);
+  const [deleting, setDeleting] = React.useState(false);
 
   React.useEffect(() => {
     const user = auth.currentUser;
@@ -73,6 +74,46 @@ export default function PastEntryDetail() {
   const labels = toSymptomLabels(entry.symptoms);
   const createdAtLabel = entry.createdAt && entry.createdAt.toDate ? entry.createdAt.toDate().toLocaleString() : '—';
 
+
+  const handleDelete = async () => {
+    if(!auth.currentUser){
+        Alert.alert('Please log in to delete entries.');
+        return;
+    }
+    if (!dayParam){
+      Alert.alert('Missing entry');
+      return;
+    }
+
+    // Confirm deletion
+    Alert.alert(
+      'Delete Entry',
+      'Are you sure you want to delete this entry? This action cannot be undone.',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Delete', style: 'destructive',
+          onPress: async () => {
+            setDeleting(true);
+            try {
+              const ref = doc(db, 'users', auth.currentUser!.uid, 'symptoms', dayParam);
+              await deleteDoc(ref);
+              Alert.alert('Entry deleted successfully!');
+              router.back();
+            } catch (err: any) {
+              Alert.alert('Failed to delete entry. Please try again.');
+            } finally {
+              setDeleting(false);
+            }
+          },
+        },
+      ],
+      { cancelable: true }
+    );
+    };
+
+  
+
   return (
     <View style={{flex:1}}>
       <View style={styles.topHeader}>
@@ -104,6 +145,11 @@ export default function PastEntryDetail() {
           <Text style={styles.sectionTitle}>Notes</Text>
           {entry.notes ? <Text style={styles.value}>{entry.notes}</Text> : <Text style={styles.muted}>(No notes)</Text>}
         </View>
+        <View style={{alignItems:'center'}}>
+            <TouchableOpacity style={styles.deleteButton} onPress={handleDelete}>
+                <Text style={{fontWeight:'bold', fontSize: 25}}>DELETE</Text>    
+            </TouchableOpacity>
+        </View>
       </View>
       </ScrollView>
     </View>
@@ -124,5 +170,6 @@ const styles = StyleSheet.create({
   meta: { marginTop:6, fontSize:12, color:'#555' },
   chipsWrap: { flexDirection:'row', flexWrap:'wrap' },
   chip: { backgroundColor:'#cdd9f6', paddingVertical:8, paddingHorizontal:10, borderRadius:16, marginRight:8, marginBottom:8 },
-  chipText: { fontSize: 15 }
+  chipText: { fontSize: 15 },
+  deleteButton: { backgroundColor: '#ff4d4d', width:'40%', paddingVertical: 12, borderRadius: 10, alignItems: 'center', marginTop: 100, shadowColor:'#000', shadowOffset:{width:0,height:4}, shadowOpacity:0.3, shadowRadius:3.84 },
 });
