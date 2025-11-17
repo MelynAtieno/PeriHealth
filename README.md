@@ -15,15 +15,15 @@ PeriHealth is a React Native (Expo) app that aims to support women experiencing 
 ## Screenshots
 
 <p align="center">
-  <img src="assets/screenshots/signUp.jpg" alt="Sign Up" width="260" />
-  <img src="assets/screenshots/logIn.jpg" alt="Log In" width="260" />
-  <img src="assets/screenshots/home.jpg" alt="Home Page" width="260" />
-  <img src="assets/screenshots/symptomForm.jpg" alt="Symptom Form" width="260" />
-  <img src="assets/screenshots/pastEntries.jpg" alt="Past Entries" width="260" />
-  <img src="assets/screenshots/entryDetails.jpg" alt="Community Chat" width="260" />
-  <img src="assets/screenshots/insights.jpg" alt="Insights" width="260" />
-  <img src="assets/screenshots/communityChat.jpg" alt="Community Chat" width="260" />
-  <img src="assets/screenshots/profile.jpg" alt="Community Chat" width="260" />
+  <img src="/frontend/assets/screenshots/signUp.jpg" alt="Sign Up" width="260" />
+  <img src="/frontend/assets/screenshots/logIn.jpg" alt="Log In" width="260" />
+  <img src="/frontend/assets/screenshots/home.jpg" alt="Home Page" width="260" />
+  <img src="/frontend/assets/screenshots/symptomForm.jpg" alt="Symptom Form" width="260" />
+  <img src="/frontend/assets/screenshots/pastEntries.jpg" alt="Past Entries" width="260" />
+  <img src="/frontend/assets/screenshots/entryDetails.jpg" alt="Community Chat" width="260" />
+  <img src="/frontend/assets/screenshots/insights.jpg" alt="Insights" width="260" />
+  <img src="/frontend/assets/screenshots/communityChat.jpg" alt="Community Chat" width="260" />
+  <img src="/frontend/assets/screenshots/profile.jpg" alt="Community Chat" width="260" />
 </p>
 
 
