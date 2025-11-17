@@ -79,7 +79,8 @@ export default function CommunityScreen() {
                 return {
                     id: doc.id,
                     text: data.text,
-                    userId: data.senderId,
+                    // Prefer new field; fall back to legacy
+                    userId: data.userId ?? data.senderId,
                     createdAt: data.createdAt,
                 };
             });
@@ -102,7 +103,7 @@ export default function CommunityScreen() {
                 keyExtractor={(item) => item.id}
                 renderItem={({ item }) => (
                     <View style={{ marginBottom: 12 }}>
-                        <MessageBubble message={item} isMe={item.senderId === auth.currentUser?.uid} />
+                        <MessageBubble message={item} isMe={item.userId === auth.currentUser?.uid} />
                     </View>
                 )}
                 contentContainerStyle={styles.content}
